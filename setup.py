@@ -159,19 +159,27 @@ LONG_DEB_DESCRIPTION = ''' .
 ############################################################
 # Build data
 ############################################################
-install_path = '/usr/lib/%s-wx-%s' % (NAME, VERSION)
+if os.name == 'nt':
+    install_path = 'sk1-wx-%s' % VERSION
+    include_path = 'include'
+    data_files = [
+        (install_path, ['LICENSE', ]),
+    ]
+else:
+    install_path = '/usr/lib/%s-wx-%s' % (NAME, VERSION)
+    include_path = '/usr/include'
+    data_files = [
+        ('/usr/share/applications', ['src/sk1.desktop', ]),
+        ('/usr/share/pixmaps', ['src/sk1.png', 'src/sk1.xpm', ]),
+        ('/usr/share/icons/hicolor/scalable/apps', ['src/sk1.svg', ]),
+        (install_path, ['LICENSE', ]),
+    ]
+
 os.environ["APP_INSTALL_PATH"] = "%s" % (install_path,)
 src_path = 'src'
-include_path = '/usr/include'
 modules = []
 scripts = ['src/script/sk1', ]
 deb_scripts = []
-data_files = [
-    ('/usr/share/applications', ['src/sk1.desktop', ]),
-    ('/usr/share/pixmaps', ['src/sk1.png', 'src/sk1.xpm', ]),
-    ('/usr/share/icons/hicolor/scalable/apps', ['src/sk1.svg', ]),
-    (install_path, ['LICENSE', ]),
-]
 
 LOCALES_PATH = 'src/sk1/share/locales'
 
