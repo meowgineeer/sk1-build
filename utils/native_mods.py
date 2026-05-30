@@ -39,14 +39,14 @@ def make_modules(src_path, include_path, lib_path=None):
     include_dirs = []
     cairo_libs = ['cairo']
 
-    if os.name == 'nt':
+    if os.name == 'nt' and 'MSYSTEM' not in os.environ:
         include_dirs = build.make_source_list(
             include_path,
             ['cairo', 'pycairo'])
     elif platform.system() == 'Darwin':
         include_dirs = pkgconfig.get_pkg_includes(['pycairo', 'cairo'])
         cairo_libs = pkgconfig.get_pkg_libs(['pycairo', 'cairo'])
-    elif os.name == 'posix':
+    elif os.name == 'posix' or 'MSYSTEM' in os.environ:
         include_dirs = pkgconfig.get_pkg_includes(['pycairo', ])
         cairo_libs = pkgconfig.get_pkg_libs(['pycairo', ])
 
@@ -64,12 +64,12 @@ def make_modules(src_path, include_path, lib_path=None):
     pycms_libraries = []
     extra_compile_args = []
 
-    if os.name == 'nt':
+    if os.name == 'nt' and 'MSYSTEM' not in os.environ:
         if platform.architecture()[0] == '32bit':
             pycms_libraries = ['lcms2_static']
         else:
             pycms_libraries = ['liblcms2-2']
-    elif os.name == 'posix':
+    elif os.name == 'posix' or 'MSYSTEM' in os.environ:
         pycms_libraries = pkgconfig.get_pkg_libs(['lcms2', ])
         extra_compile_args = ["-Wall"]
 
@@ -92,7 +92,7 @@ def make_modules(src_path, include_path, lib_path=None):
     pango_libs = [
         'pango-1.0', 'pangocairo-1.0', 'cairo', 'glib-2.0', 'gobject-2.0']
 
-    if os.name == 'nt':
+    if os.name == 'nt' and 'MSYSTEM' not in os.environ:
         include_dirs = build.make_source_list(
             include_path, ['cairo', 'pycairo', 'pango-1.0', 'glib-2.0'])
     elif platform.system() == 'Darwin':
@@ -100,7 +100,7 @@ def make_modules(src_path, include_path, lib_path=None):
                                                    'pycairo', 'cairo'])
         pango_libs = pkgconfig.get_pkg_libs(['pangocairo', 'pango', 'pycairo',
                                              'cairo'])
-    elif os.name == 'posix':
+    elif os.name == 'posix' or 'MSYSTEM' in os.environ:
         include_dirs = pkgconfig.get_pkg_includes(['pangocairo', 'pycairo'])
         pango_libs = pkgconfig.get_pkg_libs(['pangocairo', ])
 
@@ -118,9 +118,9 @@ def make_modules(src_path, include_path, lib_path=None):
     libimg_libraries = ['CORE_RL_wand_', 'CORE_RL_magick_']
     im_ver = '6'
 
-    if os.name == 'nt':
+    if os.name == 'nt' and 'MSYSTEM' not in os.environ:
         include_dirs = [include_path, include_path + '/ImageMagick']
-    elif os.name == 'posix':
+    elif os.name == 'posix' or 'MSYSTEM' in os.environ:
         im_ver = pkgconfig.get_pkg_version('MagickWand')[0]
         libimg_libraries = pkgconfig.get_pkg_libs(['MagickWand', ])
         include_dirs = pkgconfig.get_pkg_includes(['MagickWand', ])
