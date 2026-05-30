@@ -39,23 +39,34 @@ LOG = logging.getLogger(__name__)
 
 
 def get_magickwand_version():
-    import _libimg
-    ver = _libimg.get_version()
-    return ' '.join(ver[0].split(' ')[1:-1]), ver[1]
+    try:
+        import _libimg
+        ver = _libimg.get_version()
+        return ' '.join(ver[0].split(' ')[1:-1]), ver[1]
+    except ImportError:
+        return 'Not Available', (0, 0, 0)
 
 
 def check_image_file(filepath):
-    import _libimg
-    _libimg.init_magick()
-    wand = _libimg.new_image()
-    ret = _libimg.load_image(wand, filepath)
-    _libimg.terminate_magick()
-    LOG.debug('MagickWand check: %s', ret == 1)
-    return ret == 1
+    try:
+        import _libimg
+        _libimg.init_magick()
+        wand = _libimg.new_image()
+        ret = _libimg.load_image(wand, filepath)
+        _libimg.terminate_magick()
+        LOG.debug('MagickWand check: %s', ret == 1)
+        return ret == 1
+    except ImportError:
+        return False
 
 
 def process_image(raw_content):
-    import _libimg
+    try:
+        import _libimg
+    except ImportError:
+        LOG.debug('MagickWand not available')
+        return None, None
+        
     LOG.debug('MagickWand processing started')
     alpha = None
     _libimg.init_magick()
@@ -89,7 +100,11 @@ def process_image(raw_content):
 
 
 def process_pattern(raw_content):
-    import _libimg
+    try:
+        import _libimg
+    except ImportError:
+        return None, False
+        
     LOG.debug('MagickWand duotone processing started')
     _libimg.init_magick()
     wand = _libimg.new_image()

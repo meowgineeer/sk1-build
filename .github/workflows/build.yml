@@ -15,7 +15,7 @@ jobs:
 
     - name: Install vcpkg dependencies
       run: |
-        vcpkg install cairo pango lcms imagemagick --triplet x64-windows
+        vcpkg install cairo pango lcms --triplet x64-windows
 
     - name: Set up Python
       uses: actions/setup-python@v5

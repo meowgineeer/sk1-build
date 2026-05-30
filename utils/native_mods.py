@@ -140,13 +140,15 @@ def make_modules(src_path, include_path, lib_path=None):
 
     libimg_src = os.path.join(src_path, 'uc2', 'libimg')
     files = build.make_source_list(libimg_src, ['_libimg%s.c' % im_ver, ])
-    libimg_module = Extension(
-        'uc2.libimg._libimg',
-        define_macros=[('MAJOR_VERSION', '1'), ('MINOR_VERSION', '0')],
-        sources=files, include_dirs=include_dirs,
-        library_dirs=lib_path,
-        libraries=libimg_libraries,
-        extra_compile_args=compile_args)
-    modules.append(libimg_module)
+    
+    if os.name != 'nt':
+        libimg_module = Extension(
+            'uc2.libimg._libimg',
+            define_macros=[('MAJOR_VERSION', '1'), ('MINOR_VERSION', '0')],
+            sources=files, include_dirs=include_dirs,
+            library_dirs=lib_path,
+            libraries=libimg_libraries,
+            extra_compile_args=compile_args)
+        modules.append(libimg_module)
 
     return modules
