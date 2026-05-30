@@ -27,9 +27,6 @@ jobs:
           mingw-w64-x86_64-python-setuptools
           mingw-w64-x86_64-python-wheel
           mingw-w64-x86_64-python-cairo
-          mingw-w64-x86_64-python-wxpython
-          mingw-w64-x86_64-python-pillow
-          mingw-w64-x86_64-python-reportlab
           mingw-w64-x86_64-cairo
           mingw-w64-x86_64-pango
           mingw-w64-x86_64-lcms2
@@ -40,7 +37,7 @@ jobs:
 
     - name: Install System Dependencies
       run: |
-        pip install pyinstaller
+        pip install pyinstaller wxPython pillow reportlab
 
     - name: Install Application
       run: |
