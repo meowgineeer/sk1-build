@@ -286,6 +286,8 @@ fileptr2.close()
 
 with open('setup.cfg.in', 'r', encoding='utf-8') as fileptr:
     content = fileptr.read()
+    if os.name == 'nt':
+        content = content.replace('install-scripts=/usr/bin', 'install-scripts=$APP_INSTALL_PATH')
     if rpm_depends:
         content += '\nrequires = ' + rpm_depends
 
