@@ -1,0 +1,44 @@
+name: Build sk1 Windows Executable
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11' # Best compatibility for compiled extensions
+
+    - name: Install System Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel pyinstaller
+
+    - name: Install and Build Application
+      run: |
+        # This will invoke the MSVC compiler on GitHub's free runners to build the C-extensions
+        python setup.py install
+
+    - name: Package to EXE with PyInstaller
+      run: |
+        # Using collect-all to ensure we don't miss icons and dynamic libraries
+        pyinstaller --noconfirm --onedir --windowed --name "sk1" --collect-all sk1 --collect-all uc2 src/script/sk1.tmpl
+
+    - name: Zip Output
+      run: |
+        Compress-Archive -Path dist\sk1 -DestinationPath sk1-windows.zip
+
+    - name: Upload Windows Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: sk1-windows-app
+        path: sk1-windows.zip

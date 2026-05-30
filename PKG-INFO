@@ -1,0 +1,28 @@
+Metadata-Version: 1.1
+Name: sk1
+Version: 2.0rc5
+Summary: Vector graphics editor for prepress
+Home-page: https://sk1project.net
+Author: Ihor E. Novikov
+Author-email: sk1.project.org@gmail.com
+License: GPL v3
+Download-URL: https://sk1project.net
+Description: 
+        sK1 is an open source vector graphics editor similar to CorelDRAW, 
+        Adobe Illustrator, or Freehand. First of all sK1 is oriented for prepress 
+        industry, therefore works with CMYK color space and produces CMYK-based PDF 
+        and postscript output.
+        sK1 Project (https://sk1project.net),
+        Copyright (C) 2004-2021 sK1 Project Team
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Stable
+Classifier: Environment :: Desktop
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: GPL v3
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: C
+Classifier: Topic :: Multimedia :: Graphics :: Editors :: Vector-Based
