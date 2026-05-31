@@ -20,8 +20,16 @@
 import os
 import platform
 
-from . import build
-from . import pkgconfig
+try:
+    from . import build
+    from . import pkgconfig
+except (ImportError, ValueError):
+    try:
+        from utils import build
+        from utils import pkgconfig
+    except ImportError:
+        import build
+        import pkgconfig
 
 from setuptools import Extension
 
