@@ -50,7 +50,16 @@ def make_modules(src_path, include_path, lib_path=None):
             pycairo_inc = cairo.get_include()
         except ImportError:
             pycairo_inc = ''
-        include_dirs = [include_path, include_path + '/cairo', pycairo_inc]
+        
+        # Create a compatibility pycairo.h if it doesn't exist but py3cairo.h does
+        compat_inc_dir = os.path.abspath(os.path.join(src_path, '..', 'build', 'compat_includes'))
+        if not os.path.exists(compat_inc_dir):
+            os.makedirs(compat_inc_dir)
+        pycairo_h = os.path.join(compat_inc_dir, 'pycairo.h')
+        with open(pycairo_h, 'w', encoding='utf-8') as f:
+            f.write('#include <py3cairo.h>\n')
+            
+        include_dirs = [include_path, include_path + '/cairo', pycairo_inc, compat_inc_dir]
         cairo_libs = ['cairo']
     elif platform.system() == 'Darwin':
         include_dirs = pkgconfig.get_pkg_includes(['pycairo', 'cairo'])
@@ -100,7 +109,8 @@ def make_modules(src_path, include_path, lib_path=None):
         'pango-1.0', 'pangocairo-1.0', 'cairo', 'glib-2.0', 'gobject-2.0']
 
     if os.name == 'nt':
-        include_dirs = [include_path, include_path + '/cairo', include_path + '/pango-1.0', include_path + '/glib-2.0']
+        compat_inc_dir = os.path.abspath(os.path.join(src_path, '..', 'build', 'compat_includes'))
+        include_dirs = [include_path, include_path + '/cairo', include_path + '/pango-1.0', include_path + '/glib-2.0', compat_inc_dir]
         try:
             import cairo
             include_dirs.append(cairo.get_include())
