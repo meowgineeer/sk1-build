@@ -21,7 +21,7 @@
 #include <cairo.h>
 #include "Imaging.h"
 
-static Pycairo_CAPI_t *Pycairo_CAPI;
+Pycairo_CAPI_t *Pycairo_CAPI;
 
 /* redefine the ImagingObject struct defined in _imagingmodule.c */
 typedef struct {
@@ -354,6 +354,7 @@ PyInit__libcairo(void)
     if (m == NULL)
         return NULL;
 
-    Pycairo_IMPORT;
+    if (import_cairo() < 0)
+        return NULL;
     return m;
 }

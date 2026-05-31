@@ -22,7 +22,7 @@
 #include <cairo.h>
 #include <pycairo.h>
 
-static Pycairo_CAPI_t *Pycairo_CAPI;
+Pycairo_CAPI_t *Pycairo_CAPI;
 
 static PyObject *
 pango_GetVersion(PyObject *self, PyObject *args) {
@@ -590,6 +590,7 @@ PyInit__libpango(void)
     if (m == NULL)
         return NULL;
 
-    Pycairo_IMPORT;
+    if (import_cairo() < 0)
+        return NULL;
     return m;
 }
